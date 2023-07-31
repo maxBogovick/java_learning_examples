@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
@@ -40,7 +42,7 @@ public class ForkJoinTask extends RecursiveTask<String> {
     return rightValue == null ? leftValue : (leftValue == null ? rightValue : rightValue + ", " + leftValue);
   }
 
-  private String searchTextInFile(Path file, String searchText) {
+  public static String searchTextInFile(Path file, String searchText) {
     try (BufferedReader reader = new BufferedReader(new FileReader(file.toFile()))) {
       String line;
       while ((line = reader.readLine()) != null) {
@@ -57,7 +59,11 @@ public class ForkJoinTask extends RecursiveTask<String> {
   }
 
   public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
+    final LocalDateTime now = LocalDateTime.now();
+    System.out.println(now + " start processing");
     ForkJoinTask forkJoinTask = new ForkJoinTask(Files.list(Path.of("c:", "temp", "index")).toList(), "java");
-    System.out.println(ForkJoinPool.commonPool().submit(forkJoinTask).get());
+    final LocalDateTime end = LocalDateTime.now();
+    System.out.println(end + " end processing " + ForkJoinPool.commonPool().submit(forkJoinTask).get());
+    System.out.println("duration = " + Duration.between(now, end).toMillis());
   }
 }

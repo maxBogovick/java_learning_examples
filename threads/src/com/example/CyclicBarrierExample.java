@@ -2,11 +2,13 @@ package com.example;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 public class CyclicBarrierExample {
   public static void main(String[] args) {
-    final int numberOfWorkers = 3;
-    final CyclicBarrier barrier = new CyclicBarrier(numberOfWorkers, () ->
+    final int numberOfWorkers = 12;
+    final CyclicBarrier barrier = new CyclicBarrier(3, () ->
         System.out.println("All workers have completed their tasks. Moving to the next phase.")
     );
 
@@ -28,12 +30,13 @@ public class CyclicBarrierExample {
     @Override
     public void run() {
       try {
-        for (ImageTransformationType transformationType : ImageTransformationType.values()) {
-          System.out.println("Worker " + Thread.currentThread() + " is performing task " + transformationType);
+        //for (ImageTransformationType transformationType : ImageTransformationType.values()) {
+
           // Simulating task execution time
-          Thread.sleep((long) (Math.random() * 2000));
+         // Thread.sleep((long) (Math.random() * 2000));
+        System.out.println("Worker " + Thread.currentThread() + " is performing task ");
           barrier.await(); // Wait for other workers to complete their tasks
-        }
+        //}
       } catch (InterruptedException | BrokenBarrierException e) {
         e.printStackTrace();
       }

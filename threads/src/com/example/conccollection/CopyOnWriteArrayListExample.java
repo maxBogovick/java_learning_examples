@@ -2,6 +2,9 @@ package com.example.conccollection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -13,9 +16,9 @@ import java.util.concurrent.TimeUnit;
 
 public class CopyOnWriteArrayListExample {
   public static void main(String[] args) throws InterruptedException {
-    List<String> taskList = new ArrayList<>();
+    Queue<String> taskList = new ConcurrentLinkedQueue<>();
 
-    for (int i = 0; i < 301; i++) {
+    for (int i = 0; i < 20; i++) {
       taskList.add("Task " + i);
     }
     // Add some tasks to the list
